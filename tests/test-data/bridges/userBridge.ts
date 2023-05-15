@@ -1,3 +1,4 @@
+import { IRoom } from '../../../src/definition/rooms';
 import type { IUser, UserType } from '../../../src/definition/users';
 
 import { UserBridge } from '../../../src/server/bridges';
@@ -40,6 +41,10 @@ export class TestsUserBridge extends UserBridge {
     }
 
     protected deactivate(userId: IUser['id'], confirmRelinquish: boolean, appId: string): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+
+    protected getUserRoomIds(uid: string): Promise<Array<IRoom['id']>> {
         throw new Error('Method not implemented.');
     }
 }

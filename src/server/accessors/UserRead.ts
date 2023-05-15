@@ -1,9 +1,10 @@
 import { IUserRead } from '../../definition/accessors';
+import { IRoom } from '../../definition/rooms';
 import { IUser } from '../../definition/users';
 import { UserBridge } from '../bridges/UserBridge';
 
 export class UserRead implements IUserRead {
-    constructor(private userBridge: UserBridge, private appId: string) { }
+    constructor(private userBridge: UserBridge, private appId: string) {}
 
     public getById(id: string): Promise<IUser> {
         return this.userBridge.doGetById(id, this.appId);
@@ -19,5 +20,9 @@ export class UserRead implements IUserRead {
 
     public getUserUnreadMessageCount(uid: string): Promise<number> {
         return this.userBridge.doGetUserUnreadMessageCount(uid, this.appId);
+    }
+
+    public getUserRoomIds(uid: string): Promise<Array<IRoom['id']>> {
+        return this.userBridge.doGetUserRoomIds(uid, this.appId);
     }
 }

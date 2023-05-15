@@ -1,3 +1,4 @@
+import { IRoom } from '../rooms';
 import { IUser } from '../users/index';
 
 /**
@@ -19,4 +20,10 @@ export interface IUserRead {
      * @param uid user's id
      */
     getUserUnreadMessageCount(uid: string): Promise<number | undefined>;
+
+    /**
+     * Gets the user's room ids.
+     * @param uid user's id
+     */
+    getUserRoomIds(uid: string): Promise<Array<IRoom['id']>>;
 }

@@ -1,3 +1,4 @@
+import { IRoom } from '../../definition/rooms';
 import type { IUser, IUserCreationOptions, UserType } from '../../definition/users';
 import { PermissionDeniedError } from '../errors/PermissionDeniedError';
 import { AppPermissionManager } from '../managers/AppPermissionManager';
@@ -57,6 +58,12 @@ export abstract class UserBridge extends BaseBridge {
         }
     }
 
+    public async doGetUserRoomIds(uid: string, appId: string): Promise<Array<IRoom['id']>> {
+        if (this.hasReadPermission(appId)) {
+            return this.getUserRoomIds(uid);
+        }
+    }
+
     protected abstract getById(id: string, appId: string): Promise<IUser>;
     protected abstract getByUsername(username: string, appId: string): Promise<IUser>;
     protected abstract getAppUser(appId?: string): Promise<IUser | undefined>;
@@ -110,6 +117,14 @@ export abstract class UserBridge extends BaseBridge {
      * @throws {Error} if the user is the last owner, if confirmRelinquish is false.
      */
     protected abstract deactivate(userId: IUser['id'], confirmRelinquish: boolean, appId: string): Promise<boolean>;
+
+    /**
+     * Gets the rooms where the user is a member.
+     * @param uid the user's ID.
+     * @returns the room id's where the user is a member.
+     * @throws {Error} if the user is not found.
+     */
+    protected abstract getUserRoomIds(uid: string): Promise<Array<IRoom['id']>>;
 
     private hasReadPermission(appId: string): boolean {
         if (AppPermissionManager.hasPermission(appId, AppPermissions.user.read)) {
